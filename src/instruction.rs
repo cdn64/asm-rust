@@ -14,7 +14,7 @@ pub enum Instruction {
 }
 impl Instruction {
     pub fn from(line: &str) -> Option<Self> {
-        let tokens: Vec<&str> = line.split_whitespace().collect();
+        let tokens: Vec<&str> = Self::cleanup(line).split_whitespace().collect();
         if tokens.len() < 1 {
             return None;
         }
@@ -51,5 +51,8 @@ impl Instruction {
             }
             _ => None,
         }
+    }
+    fn cleanup(line: &str) -> &str {
+        line.split("# ").collect::<Vec<&str>>().first().unwrap()
     }
 }
