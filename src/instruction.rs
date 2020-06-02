@@ -11,6 +11,7 @@ pub enum Instruction {
     Add(Value),
     Jmp(Label),
     Jeq(Value, Label),
+    Jlt(Value, Label),
 }
 impl Instruction {
     pub fn from(line: &str) -> Option<Self> {
@@ -45,6 +46,14 @@ impl Instruction {
                 if let Some(value) = Value::from(tokens[1]) {
                     if let Some(label) = Label::from(tokens[2]) {
                         return Some(Self::Jeq(value, label));
+                    }
+                }
+                None
+            }
+            ("jlt", 2) => {
+                if let Some(value) = Value::from(tokens[1]) {
+                    if let Some(label) = Label::from(tokens[2]) {
+                        return Some(Self::Jlt(value, label));
                     }
                 }
                 None

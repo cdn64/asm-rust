@@ -40,6 +40,7 @@ impl Computer {
             Instruction::Mov(value, register) => self.mov(value, register),
             Instruction::Jmp(label) => self.jmp(label, instruction_sequencer),
             Instruction::Jeq(value, label) => self.jeq(value, label, instruction_sequencer),
+            Instruction::Jlt(value, label) => self.jlt(value, label, instruction_sequencer),
         }
     }
     pub fn add(&mut self, value: &Value) {
@@ -63,6 +64,18 @@ impl Computer {
         let acc_value = self.read(&Register::Acc);
         let value = self.get_value(&value);
         if acc_value == value {
+            instruction_sequencer.jump_to_label(label.to_string());
+        }
+    }
+    pub fn jlt(
+        &mut self,
+        value: &Value,
+        label: &Label,
+        instruction_sequencer: &mut InstructionSequencer,
+    ) {
+        let acc_value = self.read(&Register::Acc);
+        let value = self.get_value(&value);
+        if acc_value < value {
             instruction_sequencer.jump_to_label(label.to_string());
         }
     }
