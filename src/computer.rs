@@ -36,6 +36,7 @@ impl Computer {
         instruction_sequencer: &mut InstructionSequencer,
     ) {
         match instruction {
+            Instruction::Nop => {}
             Instruction::Add(value) => self.add(value),
             Instruction::Mov(value, register) => self.mov(value, register),
             Instruction::Jmp(label) => self.jmp(label, instruction_sequencer),

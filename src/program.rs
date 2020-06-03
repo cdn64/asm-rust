@@ -28,15 +28,15 @@ impl Program {
                 continue;
             }
             let tokens: Vec<&str> = line.split_whitespace().collect();
-            if tokens.len() == 1 {
-                let new_label = tokens.first().unwrap();
-                if new_label.ends_with(":") {
-                    label = Some(String::from(new_label.trim_end_matches(":")));
-                }
-            } else if tokens.len() >= 2 {
-                if let Some(instruction) = Instruction::from(&line) {
-                    program.lines.push(Line { instruction, label });
-                    label = None;
+            if tokens.len() >= 1 {
+                let first_token = tokens.first().unwrap();
+                if first_token.ends_with(":") {
+                    label = Some(String::from(first_token.trim_end_matches(":")));
+                } else {
+                    if let Some(instruction) = Instruction::from(&line) {
+                        program.lines.push(Line { instruction, label });
+                        label = None;
+                    }
                 }
             }
         }

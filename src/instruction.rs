@@ -7,6 +7,7 @@ use crate::value::*;
 
 #[derive(Debug, Clone)]
 pub enum Instruction {
+    Nop,
     Mov(Value, Register),
     Add(Value),
     Jmp(Label),
@@ -22,6 +23,7 @@ impl Instruction {
         let operation = tokens.first().unwrap().to_lowercase();
         let operands_count = tokens.len() - 1;
         match (operation.as_str(), operands_count) {
+            ("nop", 0) => Some(Self::Nop),
             ("mov", 2) => {
                 if let Some(value) = Value::from(tokens[1]) {
                     if let Some(register) = Register::from(tokens[2]) {
