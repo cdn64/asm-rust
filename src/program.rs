@@ -24,16 +24,13 @@ impl Program {
         let mut label: Option<String> = None;
         for line in reader.lines() {
             let line = line.unwrap();
-            if line.starts_with("#") {
-                continue;
-            }
-            let tokens: Vec<&str> = line.split_whitespace().collect();
+            let tokens = Self::tokenize(Self::uncomment(&line));
             if tokens.len() >= 1 {
                 let first_token = tokens.first().unwrap();
                 if first_token.ends_with(":") {
                     label = Some(String::from(first_token.trim_end_matches(":")));
                 } else {
-                    if let Some(instruction) = Instruction::from(&line) {
+                    if let Some(instruction) = Instruction::from(tokens) {
                         program.lines.push(Line { instruction, label });
                         label = None;
                     }
@@ -41,5 +38,11 @@ impl Program {
             }
         }
         program
+    }
+    fn uncomment(line: &str) -> &str {
+        line.split(";").collect::<Vec<&str>>().first().unwrap()
+    }
+    fn tokenize(line: &str) -> Vec<&str> {
+        line.split_whitespace().collect()
     }
 }

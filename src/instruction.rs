@@ -15,8 +15,7 @@ pub enum Instruction {
     Jlt(Value, Label),
 }
 impl Instruction {
-    pub fn from(line: &str) -> Option<Self> {
-        let tokens: Vec<&str> = Self::cleanup(line).split_whitespace().collect();
+    pub fn from(tokens: Vec<&str>) -> Option<Self> {
         if tokens.len() < 1 {
             return None;
         }
@@ -62,8 +61,5 @@ impl Instruction {
             }
             _ => None,
         }
-    }
-    fn cleanup(line: &str) -> &str {
-        line.split("# ").collect::<Vec<&str>>().first().unwrap()
     }
 }
